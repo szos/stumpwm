@@ -126,7 +126,7 @@ out, an element can just be the argument type."
                     (first name)))
           (group (if (atom name)
                      t
-                     (second name))))
+                     (cdr name))))
       (unless docstring
         (make-condition 'command-docstring-warning :command name))
       `(progn
@@ -174,7 +174,13 @@ whatever it finds: a command, an alias, or nil."
            *command-hash*))
 
 (defun command-active-p (command)
-  (typep (current-group) (command-class command))
+  (let ((group-type (type-of (current-group)))
+        (classes (command-class command)))
+    (if (listp classes)
+        (loop for class in classes
+              when (eql group-type class)
+                return t)
+        t))
   ;; TODO: minor modes
   )
 
