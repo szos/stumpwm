@@ -174,10 +174,10 @@ whatever it finds: a command, an alias, or nil."
            *command-hash*))
 
 (defun command-active-p (command)
-  (let ((group-type (type-of (current-group)))
-        (classes (command-class command)))
+  (let ((classes (command-class command)))
     (if (listp classes)
         (loop for class in classes
+              with group-type = (type-of (current-group))
               when (eql group-type class)
                 return t)
         t))

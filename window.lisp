@@ -138,9 +138,9 @@ _NET_WM_STATE_DEMANDS_ATTENTION set"
         (find-wm-state (window-xwin window) :_NET_WM_STATE_DEMANDS_ATTENTION))))
 
 (defcommand next-urgent () ()
-            "Jump to the next urgent window"
-            (and (screen-urgent-windows (current-screen))
-                 (focus-all (first (screen-urgent-windows (current-screen))))))
+  "Jump to the next urgent window"
+  (and (screen-urgent-windows (current-screen))
+       (focus-all (first (screen-urgent-windows (current-screen))))))
 
 ;; Since StumpWM already uses the term 'group' to refer to Virtual Desktops,
 ;; we'll call the grouped windows of an application a 'gang'
