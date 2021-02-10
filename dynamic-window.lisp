@@ -43,7 +43,7 @@ area."
     (recursive-tile (min *expose-n-max* num-win) group)))
 
 
-(defcommand expose () ()
+(defcommand (expose manual-group) () ()
   "Automagically tile all windows and let the user select one, make
 that window the focus. Set the variable `*expose-auto-tile-fn*' to another
 tiling function if a different layout is desired. Set `*expose-n-max*' to the
