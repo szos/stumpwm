@@ -279,6 +279,40 @@ return NIL. RATIO is a fraction to split by."
     (throw 'error :abort))
   (add-group (current-screen) name :type 'dynamic-group :background t))
 
+(defun stack-window-p (window &optional (group (current-group)))
+  (check-type group dynamic-group)
+  (member window (dynamic-group-window-stack group)))
+
+(defun master-window-p (window &optional (group (current-group)))
+  (check-type group dynamic-group)
+  (equal window (dynamic-group-master-window group)))
+
+(defun swap-stack-windows (group w1 w2)
+  (let ((f1 (window-frame w1))
+        (f2 (window-frame w2)))
+    (pull-window w1 f2 nil)
+    (pull-window w2 f1 nil)
+    (rotatef (car (member w1 (dynamic-group-window-stack group)))
+             (car (member w2 (dynamic-group-window-stack group))))))
+
+(defun exchange-dynamic-window-in-dir (window dir)
+  (let* ((group (window-group window))
+         (frame-set (group-frames group))
+         (neighbour (neighbour dir (window-frame window) frame-set))
+         (n-win (frame-window neighbour)))
+    (if (and neighbour n-win)
+        (progn (cond ((and (stack-window-p window group)
+                           (stack-window-p n-win group))
+                      (swap-stack-windows group window n-win))
+                     ((and (stack-window-p window group)
+                           (master-window-p n-win group))
+                      (swap-window-with-master group window))
+                     ((and (stack-window-p n-win group)
+                           (master-window-p window group))
+                      (swap-window-with-master group n-win)))
+               (focus-all window))
+        (message "No window in direction ~A!" dir))))
+
 (defun swap-window-with-master (group window-or-number)
   "Swap WINDOW-OR-NUMBER with the master window of GROUP. Only applicable to 
 dynamic groups."
