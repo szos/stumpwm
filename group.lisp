@@ -36,7 +36,7 @@
           group-remove-head group-resize-head group-sync-all-heads
           group-sync-head))
 
-(defvar *default-group-type* 'tile-group
+(defvar *default-group-type* 'manual-group
   "The type of group that should be created by default.")
 
 (defvar *always-show-windows* ()

@@ -31,6 +31,8 @@
    (last-frame :initform nil :accessor tile-group-last-frame)
    (current-frame :accessor tile-group-current-frame)))
 
+(defclass manual-group (tile-group) ())
+
 (defmethod initialize-instance :after ((group tile-group) &key &allow-other-keys)
   (let* ((heads (copy-heads (group-screen group))))
     (setf (tile-group-frame-tree group) heads
