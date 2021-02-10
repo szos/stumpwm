@@ -991,11 +991,11 @@ windows used to draw the numbers in. The caller must destroy them."
           (show-frame-indicator group))
         (message "Cannot split smaller than minimum size."))))
 
-(defcommand (hsplit tile-group) (&optional (ratio "1/2")) (:string)
+(defcommand (hsplit manual-group) (&optional (ratio "1/2")) (:string)
 "Split the current frame into 2 side-by-side frames."
   (split-frame-in-dir (current-group) :column (read-from-string ratio)))
 
-(defcommand (vsplit tile-group) (&optional (ratio "1/2")) (:string)
+(defcommand (vsplit manual-group) (&optional (ratio "1/2")) (:string)
 "Split the current frame into 2 frames, one on top of the other."
   (split-frame-in-dir (current-group) :row (read-from-string ratio)))
 
@@ -1023,17 +1023,17 @@ windows used to draw the numbers in. The caller must destroy them."
                         :initial-value (tile-group-frame-head group head)))
           (message "Cannot split. Maybe current frame is too small.")))))
 
-(defcommand (hsplit-equally tile-group) (amt)
+(defcommand (hsplit-equally manual-group) (amt)
     ((:number "Enter the number of frames: "))
 "Split current frame in n rows of equal size."
   (split-frame-eql-parts (current-group) :row amt))
 
-(defcommand (vsplit-equally tile-group) (amt)
+(defcommand (vsplit-equally manual-group) (amt)
     ((:number "Enter the number of frames: "))
 "Split current frame in n columns of equal size."
   (split-frame-eql-parts (current-group) :column amt))
 
-(defcommand (remove-split tile-group)
+(defcommand (remove-split manual-group)
     (&optional (group (current-group))
                (frame (tile-group-current-frame group))) ()
 "Remove the specified frame in the specified group (defaults to current group,
@@ -1086,7 +1086,7 @@ This can be used around a the \"only\" command to avoid the warning message."
          (head (current-head group)))
     (atom (tile-group-frame-head group head))))
 
-(defcommand (only tile-group) () ()
+(defcommand (only manual-group) () ()
   "Delete all the frames but the current one and grow it to take up the entire head."
   (let* ((screen (current-screen))
          (group (screen-current-group screen))
@@ -1306,25 +1306,25 @@ direction. The following are valid directions:
 "Just like move-focus except that the current is pulled along."
   (move-focus-and-or-window dir t))
 
-(defcommand (next-in-frame tile-group) () ()
+(defcommand (next-in-frame manual-group) () ()
 "Go to the next window in the current frame."
   (let ((group (current-group)))
     (if (group-current-window group)
         (focus-forward group (frame-sort-windows group (tile-group-current-frame group)))
         (other-window-in-frame group))))
 
-(defcommand (prev-in-frame tile-group) () ()
+(defcommand (prev-in-frame manual-group) () ()
 "Go to the previous window in the current frame."
   (let ((group (current-group)))
     (if (group-current-window group)
         (focus-forward group (reverse (frame-sort-windows group (tile-group-current-frame group))))
         (other-window-in-frame group))))
 
-(defcommand (other-in-frame tile-group) () ()
+(defcommand (other-in-frame manual-group) () ()
 "Go to the last accessed window in the current frame."
   (other-window-in-frame (current-group)))
 
-(defcommand (balance-frames tile-group) (&aux (group (current-group))) ()
+(defcommand (balance-frames manual-group) (&aux (group (current-group))) ()
   "Make frames the same height or width in the current frame's subtree."
   (let ((tree (tile-group-frame-head group (current-head))))
     (if (frame-p tree)

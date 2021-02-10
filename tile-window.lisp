@@ -268,7 +268,7 @@ frame."
             (frame-raise-window group (window-frame nw) nw))
         (message "No other window."))))
 
-(defcommand (pull-window-by-number tile-group) (n &optional (group (current-group)))
+(defcommand (pull-window-by-number manual-group) (n &optional (group (current-group)))
                                                ((:window-number "Pull: "))
   "Pull window N from another frame into the current frame and focus it."
   (let ((win (find n (group-windows group) :key 'window-number :test '=)))
@@ -301,24 +301,24 @@ current frame and raise it."
         (frame-raise-window group (window-frame win) win)
         (echo-string (group-screen group) "No other window."))))
 
-(defcommand (pull-hidden-next tile-group) () ()
+(defcommand (pull-hidden-next manual-group) () ()
 "Pull the next hidden window into the current frame."
   (let ((group (current-group)))
     (focus-forward group (only-tile-windows (sort-windows group)) t
                    (lambda (w) (not (eq (frame-window (window-frame w)) w))))))
 
-(defcommand (pull-hidden-previous tile-group) () ()
+(defcommand (pull-hidden-previous manual-group) () ()
 "Pull the next hidden window into the current frame."
   (let ((group (current-group)))
     (focus-forward group (nreverse (only-tile-windows (sort-windows group))) t
                    (lambda (w) (not (eq (frame-window (window-frame w)) w))))))
 
-(defcommand (pull-hidden-other tile-group) () ()
+(defcommand (pull-hidden-other manual-group) () ()
 "Pull the last focused, hidden window into the current frame."
   (let ((group (current-group)))
     (pull-other-hidden-window group)))
 
-(defcommand (pull-from-windowlist tile-group)
+(defcommand (pull-from-windowlist manual-group)
     (&optional (fmt *window-format*)) (:rest)
   "Pulls a window selected from the list of windows.
 This allows a behavior similar to Emacs' switch-to-buffer
@@ -348,11 +348,15 @@ when selecting another window."
 @item right
 @end table"
   (if win
-      (let* ((frame-set (group-frames (window-group win)))
-             (neighbour (neighbour dir (window-frame win) frame-set)))
-        (if (and neighbour (frame-window neighbour))
-            (exchange-windows win (frame-window neighbour))
-            (message "No window in direction ~A!" dir)))
+      (case (type-of (current-group))
+        (manual-group
+         (let* ((frame-set (group-frames (window-group win)))
+                (neighbour (neighbour dir (window-frame win) frame-set)))
+           (if (and neighbour (frame-window neighbour))
+               (exchange-windows win (frame-window neighbour))
+               (message "No window in direction ~A!" dir))))
+        (dynamic-group
+         (exchange-dynamic-window-in-dir win dir)))
       (message "No window in current frame!")))
 
 
@@ -383,7 +387,7 @@ frame. Possible values are:
     (setf (window-gravity (current-window)) gravity)
     (maximize-window (current-window))))
 
-(defcommand (pull-marked tile-group) () ()
+(defcommand (pull-marked manual-group) () ()
 "Pull all marked windows into the current frame and clear the marks."
   (let ((group (current-group)))
     (dolist (i (marked-windows group))
@@ -407,13 +411,13 @@ frame. Possible values are:
                 :role (and (not (equal role "")) role))
           *window-placement-rules*)))
 
-(defcommand (remember tile-group) (lock title)
+(defcommand (remember manual-group) (lock title)
                                   ((:y-or-n "Lock to group? ")
                                    (:y-or-n "Use title? "))
   "Make a generic placement rule for the current window. Might be too specific/not specific enough!"
   (make-rule-for-window (current-window) lock title))
 
-(defcommand (forget tile-group) () ()
+(defcommand (forget manual-group) () ()
   "Forget the window placement rule that matches the current window."
   (let* ((window (current-window))
          (match (rule-matching-window window)))
@@ -423,13 +427,13 @@ frame. Possible values are:
           (message "Rule forgotten."))
         (message "No matching rule."))))
 
-(defcommand (dump-window-placement-rules tile-group) (file) ((:rest "Filename: "))
+(defcommand (dump-window-placement-rules manual-group) (file) ((:rest "Filename: "))
   "Dump *window-placement-rules* to FILE."
   (dump-to-file *window-placement-rules* file))
 
 (defcommand-alias dump-rules dump-window-placement-rules)
 
-(defcommand (restore-window-placement-rules tile-group) (file) ((:rest "Filename: "))
+(defcommand (restore-window-placement-rules manual-group) (file) ((:rest "Filename: "))
   "Restore *window-placement-rules* from FILE."
   (setf *window-placement-rules* (read-dump-from-file file)))
 

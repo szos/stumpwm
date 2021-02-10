@@ -46,7 +46,8 @@ C-t.")
 (defvar *help-map* nil
   "Help related bindings hang from this keymap")
 
-(defvar *group-top-maps* '((tile-group *tile-group-top-map*)
+(defvar *group-top-maps* '((manual-group *manual-group-top-map*)
+                           (tile-group *tile-group-top-map*)
                            (group *group-top-map*))
   "An alist of the top level maps for each group type. For a given
 group, all maps whose type matches the given group are active. So for
@@ -65,15 +66,20 @@ It is available as part of the @dnf{prefix map}.")
   "Commands specific to a tile-group context hang from this keymap.
 It is available as part of the @dnf{prefix map} when the active group
 is a tile group.")
+(defvar *manual-group-top-map* nil)
+(defvar *manual-group-root-map* nil
+  "Commands specific to a manually tiling group context hang from this 
+keymap. It is available as part of the @dnf{prefix map} when the active
+group is a manual-group.")
 
 ;; Do it this way so its easier to wipe the map and get a clean one.
-(defmacro fill-keymap (map &rest bindings)
+(defmacro fill-keymap (map &body bindings)
   `(unless ,map
      (setf ,map
            (let ((m (make-sparse-keymap)))
              ,@(loop for i = bindings then (cddr i)
-                    while i
-                    collect `(define-key m ,(first i) ,(second i)))
+                     while i
+                     collect `(define-key m ,(first i) ,(second i)))
              m))))
 
 (fill-keymap *top-map*
@@ -115,7 +121,7 @@ is a tile group.")
   *escape-key* '*group-root-map*)
 
 (fill-keymap *group-root-map*
-  (kbd "C-u") "next-urgent"
+  (kbd "C-u")     "next-urgent"
   (kbd "M-n")     "next"
   (kbd "M-p")     "prev"
   (kbd "o")       "other"
@@ -160,7 +166,7 @@ is a tile group.")
   (kbd "C-M-p")   "prev-in-frame"
   (kbd "P")       "place-current-window"
   (kbd "W")       "place-existing-windows"
-  *escape-key*     "pull-hidden-other"
+  *escape-key*    "pull-hidden-other"
   (kbd "M-t")     "other-in-frame"
   (kbd "C-0")     "pull 0"
   (kbd "C-1")     "pull 1"
@@ -172,9 +178,7 @@ is a tile group.")
   (kbd "C-7")     "pull 7"
   (kbd "C-8")     "pull 8"
   (kbd "C-9")     "pull 9"
-  (kbd "R")       "remove"
-  (kbd "s")       "vsplit"
-  (kbd "S")       "hsplit"
+  
   (kbd "r")       "iresize"
   (kbd "o")       "fnext"
   (kbd "TAB")     "fnext"
@@ -182,7 +186,6 @@ is a tile group.")
   (kbd "f")       "fselect"
   (kbd "F")       "curframe"
   (kbd "-")       "fclear"
-  (kbd "Q")       "only"
   (kbd "X")       "remove-split"
   (kbd "q")       "quit-confirm"
   (kbd "Up")      "move-focus up"
@@ -193,9 +196,19 @@ is a tile group.")
   (kbd "M-Down")  "move-window down"
   (kbd "M-Left")  "move-window left"
   (kbd "M-Right") "move-window right"
-  (kbd "+")       "balance-frames"
   (kbd "l")       "redisplay"
   (kbd "C-l")     "redisplay")
+
+(fill-keymap *manual-group-top-map*
+  *escape-key* '*manual-group-root-map*)
+
+(fill-keymap *manual-group-root-map*
+  (kbd "R")       "remove"
+  (kbd "s")       "vsplit"
+  (kbd "S")       "hsplit"
+  (kbd "Q")       "only"
+  (kbd "+")       "balance-frames"
+)
 
 (fill-keymap *groups-map*
   (kbd "g")     "groups"
