@@ -375,6 +375,7 @@ FOCUS-WINDOW is an extra window used for _NET_SUPPORTING_WM_CHECK."
 
 (defun init-screen (screen-number id host)
   "Given a screen number, returns a screen structure with initialized members"
+  (declare (special *default-group-type*))
   ;; Listen for the window manager events on the root window
   (dformat 1 "Initializing screen: ~a ~a~%" host id)
   (setf (xlib:window-event-mask (xlib:screen-root screen-number))
@@ -466,7 +467,7 @@ FOCUS-WINDOW is an extra window used for _NET_SUPPORTING_WM_CHECK."
                                                     :font (when (typep font 'xlib:font) font)
                                                     :foreground fg-color
                                                     :background bg-color))))
-           (group (make-instance 'tile-group
+           (group (make-instance *default-group-type*
                                  :screen screen
                                  :number 1
                                  :name *default-group-name*)))
