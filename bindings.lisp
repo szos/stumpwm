@@ -156,6 +156,30 @@ group is a manual-group.")
   *escape-key* '*tile-group-root-map*)
 
 (fill-keymap *tile-group-root-map*
+  (kbd "r")       "iresize"
+  (kbd "o")       "fnext"
+  (kbd "TAB")     "fnext"
+  (kbd "M-TAB")   "fother"
+  (kbd "f")       "fselect"
+  (kbd "F")       "curframe"
+  (kbd "-")       "fclear"
+  (kbd "q")       "quit-confirm"
+  (kbd "Up")      "move-focus up"
+  (kbd "Down")    "move-focus down"
+  (kbd "Left")    "move-focus left"
+  (kbd "Right")   "move-focus right"
+  (kbd "l")       "redisplay"
+  (kbd "C-l")     "redisplay")
+
+(fill-keymap *manual-group-top-map*
+  *escape-key* '*manual-group-root-map*)
+
+(fill-keymap *manual-group-root-map*
+  (kbd "R")       "remove"
+  (kbd "s")       "vsplit"
+  (kbd "S")       "hsplit"
+  (kbd "Q")       "only"
+  (kbd "+")       "balance-frames"
   (kbd "n")       "pull-hidden-next"
   (kbd "C-n")     "pull-hidden-next"
   (kbd "C-M-n")   "next-in-frame"
@@ -178,37 +202,11 @@ group is a manual-group.")
   (kbd "C-7")     "pull 7"
   (kbd "C-8")     "pull 8"
   (kbd "C-9")     "pull 9"
-  
-  (kbd "r")       "iresize"
-  (kbd "o")       "fnext"
-  (kbd "TAB")     "fnext"
-  (kbd "M-TAB")   "fother"
-  (kbd "f")       "fselect"
-  (kbd "F")       "curframe"
-  (kbd "-")       "fclear"
   (kbd "X")       "remove-split"
-  (kbd "q")       "quit-confirm"
-  (kbd "Up")      "move-focus up"
-  (kbd "Down")    "move-focus down"
-  (kbd "Left")    "move-focus left"
-  (kbd "Right")   "move-focus right"
   (kbd "M-Up")    "move-window up"
   (kbd "M-Down")  "move-window down"
   (kbd "M-Left")  "move-window left"
-  (kbd "M-Right") "move-window right"
-  (kbd "l")       "redisplay"
-  (kbd "C-l")     "redisplay")
-
-(fill-keymap *manual-group-top-map*
-  *escape-key* '*manual-group-root-map*)
-
-(fill-keymap *manual-group-root-map*
-  (kbd "R")       "remove"
-  (kbd "s")       "vsplit"
-  (kbd "S")       "hsplit"
-  (kbd "Q")       "only"
-  (kbd "+")       "balance-frames"
-)
+  (kbd "M-Right") "move-window right")
 
 (fill-keymap *groups-map*
   (kbd "g")     "groups"
