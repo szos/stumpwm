@@ -1302,7 +1302,7 @@ direction. The following are valid directions:
 @end table"
   (move-focus-and-or-window dir))
 
-(defcommand (move-window tile-group) (dir) ((:direction "Direction: "))
+(defcommand (move-window manual-group) (dir) ((:direction "Direction: "))
 "Just like move-focus except that the current is pulled along."
   (move-focus-and-or-window dir t))
 
