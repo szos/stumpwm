@@ -16,8 +16,7 @@
                #:cl-ppcre
                #:clx
                #:sb-posix
-               #:sb-introspect
-               #:cffi)
+               #:sb-introspect)
   :components ((:file "package")
                (:file "debug")
                (:file "primitives")
@@ -59,6 +58,7 @@
                (:file "color")
                (:file "wse")
                (:file "dynamic-window")
+               (:file "dynamic-group")
                (:file "remap-keys")
                ;; keep this last so it always gets recompiled if
                ;; anything changes
