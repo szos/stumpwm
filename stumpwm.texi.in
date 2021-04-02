@@ -381,13 +381,16 @@ This causes the frames holding the stack windows to get progressively smaller
 the more windows are added to the group. When a window stack frame becomes to
 small to split, the window at the bottom of the stack gets sent to an overflow
 group. This behavior can be configured with
-@var{*dynamic-group-overflow-policy*}. 
-
-### *dynamic-group-overflow-policy*
+@var{*dynamic-group-overflow-policy*}. The master windows default location is
+on the left hand side, but this can be changed on a global or per-group basis.
 
 ### *dynamic-overflow-group*
 
+### *dynamic-group-overflow-policy*
+
 ### *dynamic-group-master-split-ratio*
+
+@@@ dynamic-group-master-location-dwim
 
 Normal tiling group window and frame commands dont work within a dynamic group,
 being supplanted by the following group specific selection, rotation,
@@ -419,14 +422,19 @@ the master window.
 
 @item
 @command{dyn-focus-master-window} (@kbd{C-t f}) Move focus to the master window.
+
+@item
+@command{change-layout} (unbound by default) Change where the master
+window/frame is located, either to the left, right, top, or bottom. By default
+only affects the current group.
 @end itemize
 
 When defining commands, anything restricted to tiling groups will also be
 active in dynamic groups. To fully restrict it to tiling groups, call the
-function dyn-blacklist-command on the command in question.
+function dyn-blacklist-command on the command in question. 
 
 
-@node Frame Basics, Window Basics, Floating Group Basics, Basic Concepts
+@node Frame Basics, Window Basics, Dynamic Group Basics, Basic Concepts
 @subsection Frame Basics
 Frames are the boxes within which windows are displayed. StumpWM
 starts with a single frame per head, meaning that each monitor shows a

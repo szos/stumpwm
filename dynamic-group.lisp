@@ -28,7 +28,7 @@ at the end of the stack, :MOST-IMPORTANT from the beginning, :MASTER takes the
 master window, and :NEW-WINDOW moves the window being introduced to the group.")
 
 (defun dynamic-group-master-location-dwim (set &optional (extent :all))
-  "change the location of the master window for (a) dynamic group(s). When SET is 
+  "Change the location of the master window for (a) dynamic group(s). When SET is 
 nil, the current location is returned based on EXTENT. EXTENT is either a list of 
 groups or one of the keywords :ALL or :CURRENT. EXTENT controls which groups SET 
 applies to. 
@@ -111,7 +111,7 @@ Defaults to 2/3. Must be less than 1.")
 
 (defvar *dynamic-overflow-group* ".Overflow"
   "The group to which windows will be sent when a dynamic group can no longer 
-split the window stack.")
+split the window stack. Defaults to \".Overflow\".")
 
 (defun dynamic-merge-overflow-group (group to-group)
   (let ((*dynamic-overflow-group* (concat *dynamic-overflow-group* " °2")))
