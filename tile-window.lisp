@@ -4,9 +4,10 @@
 
 (export '(*ignore-wm-inc-hints*))
 
-(defvar *ignore-wm-inc-hints* nil
+(defsetting *ignore-wm-inc-hints* nil
   "Set this to T if you never want windows to resize based on incremental WM_HINTs,
-like xterm and emacs.")
+like xterm and emacs."
+  :typespec '(or t null))
 
 (defclass tile-window (window)
   ((frame   :initarg :frame   :accessor window-frame)

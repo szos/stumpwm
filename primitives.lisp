@@ -184,34 +184,42 @@
 
 
 ;;; Completions
-(defvar *maximum-completions* 100
+
+(defsetting *maximum-completions* 100
   "Maximum number of completions to show in interactive prompts. Setting
   this too high can crash the completion process due to drawing too far
-  off screen.")
+  off screen."
+  :typespec '(integer 0))
 
 ;;; Message Timer
-(defvar *suppress-abort-messages* nil
-  "Suppress abort message when non-nil.")
+(defsetting *suppress-abort-messages* nil
+  "Suppress abort message when non-nil."
+  :typespec '(or null t))
 
-(defvar *timeout-wait* 5
+(defsetting *timeout-wait* 5
   "Specifies, in seconds, how long a message will appear for. This must
-be an integer.")
+be an integer."
+  :typespec '(integer 0))
 
-(defvar *timeout-frame-indicator-wait* 1
-  "The amount of time a frame indicator timeout takes.")
+(defsetting *timeout-frame-indicator-wait* 1
+  "The amount of time a frame indicator timeout takes."
+  :typespec '(integer 0))
 
 (defvar *frame-indicator-timer* nil
   "Keep track of the timer that hides the frame indicator.")
 
-(defvar *frame-indicator-text* " Current Frame "
-  "What appears in the frame indicator window?")
+(defsetting *frame-indicator-text* " Current Frame "
+  "What appears in the frame indicator window?"
+  :typespec 'string)
 
-(defvar *suppress-frame-indicator* nil
-  "Set this to T if you never want to see the frame indicator.")
+(defsetting *suppress-frame-indicator* nil
+  "Set this to T if you never want to see the frame indicator."
+  :typespec '(or t null))
 
-(defvar *suppress-window-placement-indicator* nil
+(defsetting *suppress-window-placement-indicator* nil
   "Set to T if you never want to see messages that windows were placed
-  according to rules.")
+  according to rules."
+  :typespec '(or t null))
 
 (defvar *message-window-timer* nil
   "Keep track of the timer that hides the message window.")
@@ -373,20 +381,25 @@ with 1 argument: the menu.")
 (defvar *display* nil
   "The display for the X server")
 
-(defvar *shell-program* "/bin/sh"
-  "The shell program used by @code{run-shell-command}.")
+(defsetting *shell-program* "/bin/sh"
+  "The shell program used by @code{run-shell-command}."
+  :typespec 'string)
 
-(defvar *maxsize-border-width* 1
-  "The width in pixels given to the borders of windows with maxsize or ratio hints.")
+(defsetting *maxsize-border-width* 1
+  "The width in pixels given to the borders of windows with maxsize or ratio hints."
+  :typespec '(integer 0))
 
-(defvar *transient-border-width* 1
-  "The width in pixels given to the borders of transient or pop-up windows.")
+(defsetting *transient-border-width* 1
+  "The width in pixels given to the borders of transient or pop-up windows."
+  :typespec '(integer 0))
 
-(defvar *normal-border-width* 1
-  "The width in pixels given to the borders of regular windows.")
+(defsetting *normal-border-width* 1
+  "The width in pixels given to the borders of regular windows."
+  :typespec '(integer 0))
 
-(defvar *text-color* "white"
-  "The color of message text.")
+(defsetting *text-color* "white"
+  "The color of message text."
+  :typespec 'string)
 
 (defvar *menu-maximum-height* nil
   "Defines the maxium number of lines to display in the menu before enabling
@@ -455,13 +468,15 @@ Include only those we are ready to support.")
   "The events to listen for on managed windows' parents.")
 
 ;; Message window variables
-(defvar *message-window-padding* 5
-  "The number of pixels that pad the text in the message window.")
+(defsetting *message-window-padding* 5
+  "The number of pixels that pad the text in the message window."
+  :typespec '(integer 0))
 
-(defvar *message-window-y-padding* 0
-  "The number of pixels that pad the text in the message window vertically.")
+(defsetting *message-window-y-padding* 0
+  "The number of pixels that pad the text in the message window vertically."
+  :typespec '(integer 0))
 
-(defvar *message-window-gravity* :top-right
+(defsetting *message-window-gravity* :top-right
   "This variable controls where the message window appears. The following
 are valid values.
 @table @asis
@@ -474,9 +489,11 @@ are valid values.
 @item :left
 @item :right
 @item :bottom
-@end table")
+@end table"
+  :typespec '(member :top-left :top-right :bottom-left :bottom-right :center
+                     :top :left :right :bottom))
 
-(defvar *message-window-input-gravity* :top-left
+(defsetting *message-window-input-gravity* :top-left
   "This variable controls where the message window appears
 when the input window is being displayed. The following are valid values.
 @table @asis
@@ -489,13 +506,15 @@ when the input window is being displayed. The following are valid values.
 @item :left
 @item :right
 @item :bottom
-@end table")
+@end table"
+  :typespec '(member :top-left :top-right :bottom-left :bottom-right :center
+                     :top :left :right :bottom))
 
 ;; line editor
 (defvar *editor-bindings* nil
   "A list of key-bindings for line editing.")
 
-(defvar *input-window-gravity* :top-right
+(defsetting *input-window-gravity* :top-right
   "This variable controls where the input window appears. The following
 are valid values.
 @table @asis
@@ -508,7 +527,9 @@ are valid values.
 @item :left
 @item :right
 @item :bottom
-@end table")
+@end table"
+  :typespec '(member :top-left :top-right :bottom-left :bottom-right :center
+                     :top :left :right :bottom))
 
 ;; default values. use the set-* functions to these attributes
 (defparameter +default-foreground-color+ "White")
@@ -527,7 +548,7 @@ are valid values.
 (defvar *maxsize-gravity* :center)
 (defvar *transient-gravity* :center)
 
-(defvar *top-level-error-action* :abort
+(defsetting *top-level-error-action* :abort
   "If an error is encountered at the top level, in
 STUMPWM-INTERNAL-LOOP, then this variable decides what action
 shall be taken. By default it will print a message to the screen
@@ -536,9 +557,10 @@ and to *standard-output*.
 Valid values are :message, :break, :abort. :break will break to the
 debugger. This can be problematic because if the user hit's a
 mapped key the ENTIRE keyboard will be frozen and you will have
-to login remotely to regain control. :abort quits stumpwm.")
+to login remotely to regain control. :abort quits stumpwm."
+  :typespec '(member :abort :message :break))
 
-(defvar *window-name-source* :title
+(defsetting *window-name-source* :title
   "This variable controls what is used for the window's name. The default is @code{:title}.
 
 @table @code
@@ -550,7 +572,8 @@ Use the window's resource class.
 
 @item :resource-name
 Use the window's resource name.
-@end table")
+@end table"
+  :typespec '(member :title :class :resource-name))
 
 (defstruct frame
   (number nil :type integer)
@@ -637,7 +660,7 @@ exist, in which case they go into the current group.")
 (defvar *group-number-map* "1234567890"
   "Set this to a string to remap the group numbers to something more convenient.")
 
-(defvar *frame-number-map* "0123456789abcdefghijklmnopqrstuvwxyz"
+(defsetting *frame-number-map* "0123456789abcdefghijklmnopqrstuvwxyz"
   "Set this to a string to remap the frame numbers to more convenient keys.
 For instance,
 
@@ -646,7 +669,8 @@ For instance,
 would map frame 0 to 7 to be selectable by hitting the appropriate
 homerow key on a dvorak keyboard. Currently, only single char keys are
 supported. By default, the frame labels are the 36 (lower-case)
-alphanumeric characters, starting with numbers 0-9.")
+alphanumeric characters, starting with numbers 0-9."
+  :typespec 'string)
 
 (defun get-frame-number-translation (frame)
   "Given a frame return its number translation using *frame-number-map* as a
@@ -878,7 +902,7 @@ string which is split to obtain the individual regexps. "
                               (#\g gravity-for-window))
   "an alist containing format character format function pairs for formatting window lists.")
 
-(defvar *window-format* "%m%n%s%50t"
+(defsetting *window-format* "%m%n%s%50t"
   "This variable decides how the window list is formatted. It is a string
 with the following formatting options:
 
@@ -901,15 +925,20 @@ Draw a # if the window is marked.
 
 Note, a prefix number can be used to crop the argument to a specified
 size. For instance, @samp{%20t} crops the window's title to 20
-characters.")
+characters."
+  :typespec 'string)
 
-(defvar *window-info-format* "%wx%h %n (%t)"
+(defsetting *window-info-format* "%wx%h %n (%t)"
   "The format used in the info command. See
-  @var{*window-format*} for formatting details.")
+  @var{*window-format*} for formatting details."
+  :typespec 'string)
 
 (defparameter *window-format-by-class* "%m%n %c %s%50t"
   "The format used in the info winlist-by-class command. See
  @var{*window-format*} for formatting details.")
+
+(define-pre-existing-setting *window-format-by-class*
+  :typespec 'string)
 
 (defvar *group-formatters* '((#\n group-map-number)
                              (#\s fmt-group-status)
@@ -921,7 +950,7 @@ with a group as an argument. The functions return value is inserted
 into the string. If the return value isn't a string it is converted to
 one using @code{prin1-to-string}.")
 
-(defvar *group-format* "%n%s%t"
+(defsetting *group-format* "%n%s%t"
   "The format string that decides what information will show up in the
 group listing. The following format options are available:
 
@@ -935,10 +964,12 @@ The group's status. Similar to a window's status.
 
 @item %t
 The group's name.
-@end table")
+@end table"
+  :typespec 'string)
 
-(defvar *list-hidden-groups* nil
-  "Controls whether hidden groups are displayed by 'groups' and 'vgroups' commands")
+(defsetting *list-hidden-groups* nil
+  "Controls whether hidden groups are displayed by 'groups' and 'vgroups' commands"
+  :typespec '(or t null))
 
 ;; (defun font-height (font)
 ;;   (+ (font-descent font)
@@ -951,8 +982,9 @@ generally set when killing text in the input bar.")
 (defvar *last-command* nil
   "Set to the last interactive command run.")
 
-(defvar *max-last-message-size* 20
-  "how many previous messages to keep.")
+(defsetting *max-last-message-size* 20
+  "how many previous messages to keep."
+  :typespec '(integer 0))
 
 (defvar *record-last-msg-override* nil
   "assign this to T and messages won't be recorded. It is
@@ -964,14 +996,16 @@ recommended this is assigned using LET.")
 (defvar *ignore-echo-timeout* nil
   "Assign this T and the message time out won't be touched. It is recommended to assign this using LET.")
 
-(defvar *run-or-raise-all-groups* t
+(defsetting *run-or-raise-all-groups* t
   "When this is @code{T} the @code{run-or-raise} function searches all groups for a
-running instance. Set it to NIL to search only the current group.")
+running instance. Set it to NIL to search only the current group."
+  :typespec '(or t null))
 
-(defvar *run-or-raise-all-screens* nil
+(defsetting *run-or-raise-all-screens* nil
   "When this is @code{T} the @code{run-or-raise} function searches all screens for a
 running instance. Set it to @code{NIL} to search only the current screen. If
-@var{*run-or-raise-all-groups*} is @code{NIL} this variable has no effect.")
+@var{*run-or-raise-all-groups*} is @code{NIL} this variable has no effect."
+  :typespec '(or t null))
 
 (defvar *deny-map-request* nil
   "A list of window properties that stumpwm should deny matching windows'
@@ -989,8 +1023,9 @@ raise/map denial messages will be seen.")
 (defvar *honor-window-moves* t
   "Allow windows to move between frames.")
 
-(defvar *resize-hides-windows* nil
-  "Set to T to hide windows during interactive resize")
+(defsetting *resize-hides-windows* nil
+  "Set to T to hide windows during interactive resize"
+  :typespec '(or t null))
 
 (defun deny-request-p (window deny-list)
   (or (eq deny-list t)
@@ -1009,17 +1044,19 @@ ITEM. Return the new list."
         (nconc (subseq list 0 p) replacements (subseq list (1+ p)))
         list)))
 
-(defvar *min-frame-width* 50
+(defsetting *min-frame-width* 50
   "The minimum width a frame can be. A frame will not shrink below this
 width. Splitting will not affect frames if the new frame widths are
-less than this value.")
+less than this value."
+  :typespec '(integer 0))
 
-(defvar *min-frame-height* 50
+(defsetting *min-frame-height* 50
   "The minimum height a frame can be. A frame will not shrink below this
 height. Splitting will not affect frames if the new frame heights are
-less than this value.")
+less than this value."
+  :typespec '(integer 0))
 
-(defvar *new-frame-action* :last-window
+(defsetting *new-frame-action* :last-window
   "When a new frame is created, this variable controls what is put in the
 new frame. Valid values are
 
@@ -1030,9 +1067,10 @@ The frame is left empty
 @item :last-window
 The last focused window that is not currently visible is placed in the
 frame. This is the default.
-@end table")
+@end table"
+  :typespec '(member :empty :last-window))
 
-(defvar *new-window-preferred-frame* '(:focused)
+(defsetting *new-window-preferred-frame* '(:focused)
   "This variable controls what frame a new window appears in. It is a
 list of preferences. The first preference that is satisfied is
 used. Valid list elements are as follows:
@@ -1052,23 +1090,26 @@ Choose any unfocused frame.
 @end table
 
 Alternatively, it can be set to a function that takes one argument, the new
-window, and returns the preferred frame or a list of the above preferences.")
+window, and returns the preferred frame or a list of the above preferences."
+  :typespec '(or (member :focused :last :empty :unfocused) cons function))
 
 (defun backtrace-string ()
   "Similar to print-backtrace, but return the backtrace as a string."
   (with-output-to-string (*standard-output*)
     (print-backtrace)))
 
-(defvar *startup-message* "^2*Welcome to The ^BStump^b ^BW^bindow ^BM^banager!
+(defsetting *startup-message* "^2*Welcome to The ^BStump^b ^BW^bindow ^BM^banager!
 Press ^5*~a ?^2* for help."
   "This is the message StumpWM displays when it starts. Set it to NIL to
-suppress.")
+suppress."
+  :typespec '(or string null))
 
-(defvar *default-package* (find-package '#:stumpwm-user)
+(defsetting *default-package* (find-package '#:stumpwm-user)
   "This is the package eval reads and executes in. You might want to set
 this to @code{:stumpwm} if you find yourself using a lot of internal
 stumpwm symbols. Setting this variable anywhere but in your rc file
-will have no effect.")
+will have no effect."
+  :typespec 'package)
 
 (defun concat (&rest strings)
   (apply 'concatenate 'string strings))
@@ -1168,20 +1209,23 @@ regardless of whether the window properties match. Takes one argument, the windo
   "Clear all window placement rules."
   (setf *window-placement-rules* nil))
 
-(defvar *mouse-focus-policy* :ignore
+(defsetting *mouse-focus-policy* :ignore
   "The mouse focus policy decides how the mouse affects input
 focus. Possible values are :ignore, :sloppy, and :click. :ignore means
 stumpwm ignores the mouse. :sloppy means input focus follows the
 mouse; the window that the mouse is in gets the focus. :click means
-input focus is transfered to the window you click on.")
+input focus is transfered to the window you click on."
+  :typespec '(member :click :ignore :sloppy))
 
-(defvar *root-click-focuses-frame* t
+(defsetting *root-click-focuses-frame* t
   "Set to NIL if you don't want clicking the root window to focus the frame
-  containing the pointer.")
+  containing the pointer."
+  :typespec '(or t null))
 
-(defvar *banish-pointer-to* :head
+(defsetting *banish-pointer-to* :head
   "Where to put the pointer when no argument is given to (banish-pointer) or the banish
-  command. May be one of :screen :head :frame or :window")
+  command. May be one of :screen :head :frame or :window"
+  :typespec '(member :screen :head :frame :window))
 
 (defvar *xwin-to-window* (make-hash-table)
   "Hash table for looking up windows quickly.")
@@ -1189,8 +1233,9 @@ input focus is transfered to the window you click on.")
 (defvar *resize-map* nil
   "The keymap used for resizing a window")
 
-(defvar *default-group-name* "Default"
-  "The name of the default group.")
+(defsetting *default-group-name* "Default"
+  "The name of the default group."
+  :typespec 'string)
 
 (defmacro with-focus (xwin &body body)
   "Set the focus to xwin, do body, then restore focus"
@@ -1208,7 +1253,7 @@ input focus is transfered to the window you click on.")
   "When this is T a backtrace is displayed with errors that occurred
 within an interactive call to a command.")
 
-(defvar *window-border-style* :thick
+(defsetting *window-border-style* :thick
   "This controls the appearance of the border around windows. valid
 values are:
 @table @var
@@ -1230,7 +1275,8 @@ Like :tight but no border is ever visible.
 @end table
 
 After changing this variable you may need to call
-sync-all-frame-windows to see the change.")
+sync-all-frame-windows to see the change."
+  :typespec '(member :thick :thin :tight :none))
 
 (defvar *data-dir* nil
   "The directory used by stumpwm to store data between sessions.")

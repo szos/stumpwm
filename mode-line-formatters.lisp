@@ -25,13 +25,15 @@
 
 ;;; Settings
 
-(defvar *hidden-window-color* "^5*"
+(defsetting *hidden-window-color* "^5*"
   "Color command for hidden windows when using the
 fmt-head-window-list-hidden-windows formatter. To disable coloring
-hidden windows, set this to an empty string.")
+hidden windows, set this to an empty string."
+  :typespec 'string)
 
-(defvar *mode-line-highlight-template* "^R~A^r"
-  "The string passed to FORMAT to highlight things in the mode line.")
+(defsetting *mode-line-highlight-template* "^R~A^r"
+  "The string passed to FORMAT to highlight things in the mode line."
+  :typespec 'string)
 
 ;;; Utilities
 

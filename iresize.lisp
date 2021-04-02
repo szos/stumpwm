@@ -29,8 +29,9 @@
           iresize
           setup-iresize))
 
-(defvar *resize-increment* 10
-  "Number of pixels to increment by when interactively resizing frames.")
+(defsetting *resize-increment* 10
+  "Number of pixels to increment by when interactively resizing frames."
+  :typespec '(integer 1))
 
 (defun set-resize-increment (val)
   (setf *resize-increment* val))

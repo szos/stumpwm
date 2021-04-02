@@ -43,8 +43,9 @@
           time
           refresh-time-zone))
 
-(defvar *time-format-string-default* "%a %b %e %Y %k:%M:%S"
-  "The default value for `echo-date', (e.g, Thu Mar  3 2005 23:05:25).")
+(defsetting *time-format-string-default* "%a %b %e %Y %k:%M:%S"
+  "The default value for `echo-date', (e.g, Thu Mar  3 2005 23:05:25)."
+  :typespec 'string)
 
 (defvar *time-modeline-string* "%a %b %e %k:%M:%S"
   "The default time value to pass to the modeline.")

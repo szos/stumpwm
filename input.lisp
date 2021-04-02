@@ -194,7 +194,7 @@ and complete the input by mutating it."))
 two arguments: the input string and a list of completions. The function should
 return a list of completions, possibly filtered and/or sorted.")
 
-(defvar *input-completion-style* (make-input-completion-style-cyclic)
+(defsetting *input-completion-style* (make-input-completion-style-cyclic)
   "The completion style to use.
 A completion style has to implement input-completion-reset
 and input-completion-complete.
@@ -202,7 +202,9 @@ Available completion styles include
 @table @asis
 @item make-input-completion-style-cyclic
 @item make-input-completion-style-unambiguous
-@end table")
+@end table"
+  :typespec '(or stumpwm::input-completion-style-cyclic
+                 stumpwm::input-completion-style-unambiguous))
 
 (defvar *input-completion-show-empty* nil
   "If t, show completion candidates even if the input is empty.")

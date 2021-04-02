@@ -28,14 +28,15 @@
           set-x-selection
           *default-selections*))
 
-(defvar *default-selections* '(:primary)
+(defsetting *default-selections* '(:primary)
   #.(format
      nil "~@{~A~%~}"
      "A keyword or list, one of:"
      ":primary or '(:primary) uses only the \"primary\" selection"
      ":clipboard or '(:clipboard) uses only the \"clipboard\" selection"
      "Both can be specified in a list like '(:primary :clipboard). In this case,"
-     "set-x-selection will clobber both, and get-x-selection will default to the first item."))
+     "set-x-selection will clobber both, and get-x-selection will default to the first item.")
+  :typespec '(or (member :primary :clipboard) cons))
 
 (defun export-selection (selection)
   (let* ((screen (current-screen))

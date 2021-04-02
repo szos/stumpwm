@@ -35,28 +35,35 @@
 
 ;;; Settings
 
-(defvar *mode-line-position* :top
-  "Specifies where the mode line is displayed. Valid values are :top and :bottom.")
+(defsetting *mode-line-position* :top
+  "Specifies where the mode line is displayed. Valid values are :top and :bottom."
+  :typespec '(member :top :bottom))
 
-(defvar *mode-line-border-width* 1
-  "Specifies how thick the mode line's border will be. Integer value.")
+(defsetting *mode-line-border-width* 1
+  "Specifies how thick the mode line's border will be. Integer value."
+  :typespec '(integer 0))
 
-(defvar *mode-line-pad-x* 5
-  "Specifies the number of padding pixels between the text and the side of the mode line. Integer value.")
+(defsetting *mode-line-pad-x* 5
+  "Specifies the number of padding pixels between the text and the side of the mode line. Integer value."
+  :typespec '(integer 0))
 
-(defvar *mode-line-pad-y* 1
-  "The number of padding pixels between the modeline text and the top/bottom of the modeline. Integer value.")
+(defsetting *mode-line-pad-y* 1
+  "The number of padding pixels between the modeline text and the top/bottom of the modeline. Integer value."
+  :typespec '(integer 0))
 
-(defvar *mode-line-background-color* "Gray20"
-  "The mode line background color.")
+(defsetting *mode-line-background-color* "Gray20"
+  "The mode line background color."
+  :typespec 'string)
 
-(defvar *mode-line-foreground-color* "Gray50"
-  "The mode line foreground color.")
+(defsetting *mode-line-foreground-color* "Gray50"
+  "The mode line foreground color."
+  :typespec 'string)
 
-(defvar *mode-line-border-color* "Gray30"
-  "The mode line border color.")
+(defsetting *mode-line-border-color* "Gray30"
+  "The mode line border color."
+  :typespec 'string)
 
-(defvar *screen-mode-line-format* "[^B%n^b] %W"
+(defsetting *screen-mode-line-format* "[^B%n^b] %W"
   "This variable describes what will be displayed on the modeline for each screen.
 Turn it on with the function TOGGLE-MODE-LINE or the mode-line command.
 
@@ -102,18 +109,20 @@ Using @var{*time-modeline-string*}, print the time.
 @end table
 
 A number of modules have been written that extends the possible
-formatting strings.  See their documentation for details.")
+formatting strings.  See their documentation for details."
+  :typespec 'string)
 
 (defvar *screen-mode-line-formatters* ()
   "An alist containing format character format function pairs for
 formatting screen mode-lines. functions are passed the mode line.")
 
-(defvar *mode-line-timeout* 60
+(defsetting *mode-line-timeout* 60
   "The modeline updates after each command, when a new window appears or
 an existing one disappears, and on a timer. This variable controls how
 many seconds elapse between each update. If this variable is changed
 while the modeline is visible, you must toggle the modeline to update
-timer.")
+timer."
+  :typespec '(integer 1))
 
 (defvar *mode-line-timer* nil
   "The timer that updates the modeline")

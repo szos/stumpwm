@@ -15,10 +15,14 @@
   :depends-on (#:alexandria
                #:cl-ppcre
                #:clx
+               #:defconfig
+               #:mcclim
+               #:slim
                #:sb-posix
                #:sb-introspect)
   :components ((:file "package")
                (:file "debug")
+               (:file "customize-base")
                (:file "primitives")
                (:file "wrappers")
                (:file "pathnames")
@@ -60,6 +64,8 @@
                (:file "dynamic-window")
                (:file "dynamic-group")
                (:file "remap-keys")
+               (:file "customize")
+               (:file "customize-gui")
                ;; keep this last so it always gets recompiled if
                ;; anything changes
                (:file "version"))

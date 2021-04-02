@@ -29,8 +29,9 @@
 
 (defvar *remap-keys-window-match-list* nil)
 
-(defvar *remapped-keys-enabled-p* t
-  "Bool to toggle remapped-keys on/off. Defaults to t ")
+(defsetting *remapped-keys-enabled-p* t
+  "Bool to toggle remapped-keys on/off. Defaults to t "
+  :typespec 'boolean)
 
 (defun find-remap-keys-by-window (window)
   (first

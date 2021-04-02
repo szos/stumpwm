@@ -61,7 +61,7 @@
           update-screen-color-context
           lookup-color))
 
-(defvar *colors*
+(defsetting *colors*
   '("black"
     "red"
     "green"
@@ -71,7 +71,10 @@
     "cyan"
     "white")
   "Eight colors by default. You can redefine these to whatever you like and
-then call (update-color-map).")
+then call (update-color-map)."
+  :validator (lambda (x)
+               (when (listp x)
+                 (every 'stringp x))))
 
 (defun adjust-color (color amt)
   (labels ((max-min (x y) (max 0 (min 1 (+ x y)))))

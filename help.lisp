@@ -25,10 +25,12 @@
 (in-package #:stumpwm)
 
 (export '(*help-max-height* *message-max-width*))
-(defvar *message-max-width* 80
-  "The maximum width of a message before it wraps.")
-(defvar *help-max-height* 10
-  "Maximum number of lines for help to display.")
+(defsetting *message-max-width* 80
+  "The maximum width of a message before it wraps."
+  :typespec '(integer 1))
+(defsetting *help-max-height* 10
+  "Maximum number of lines for help to display."
+  :typespec '(integer 1))
 
 (defun columnize (list columns &key col-aligns (pad 1) (char #\Space) (align :left))
   ;; only somewhat nasty
