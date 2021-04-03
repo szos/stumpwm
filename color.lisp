@@ -76,6 +76,8 @@ then call (update-color-map)."
                (when (listp x)
                  (every 'stringp x))))
 
+;; (declaim (special *colors*))
+
 (defun adjust-color (color amt)
   (labels ((max-min (x y) (max 0 (min 1 (+ x y)))))
     (setf (xlib:color-red color) (max-min (xlib:color-red color) amt)
